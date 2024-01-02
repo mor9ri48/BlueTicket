@@ -1,0 +1,2 @@
+class Airmodel < ApplicationRecord
+end
