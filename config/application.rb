@@ -33,5 +33,8 @@ module Blue
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # 日本標準時に設定
+    config.time_zone = "Tokyo"
   end
 end
