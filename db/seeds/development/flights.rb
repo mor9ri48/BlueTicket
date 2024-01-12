@@ -7,9 +7,9 @@ random = Random.new()                   #飛行機のクラスを決める
     deptime = deptime + 9.hours         #飛行機の始発便は6時設定（21:00から6:00にするため＋9hours）
     10.upto(39) do |flightnum|  #便番号の下二桁
         orig = flightnum % 8    #出発地ID
-        0.upto(2) do |alnum|    #航空会社ID
+        1.upto(3) do |alnum|    #航空会社ID
             #↓↓↓出発地IDと到着地ID（同じ出発地が続かないように出発地と到着地それぞれにalnumを足す形にしている）↓↓↓
-            orig_dest_ids = [(orig + alnum) % 8, (orig + alnum + dest) % 8]
+            orig_dest_ids = [(orig + alnum-1) % 8 + 1, (orig + alnum-1 + dest) % 8 + 1]
             dest = dest + 1
             if(dest == 8) then  #出発地IDと到着地IDが同じにならないようにする（出発と到着IDのズレ!=0）
                 dest = 1
@@ -76,12 +76,12 @@ random = Random.new()                   #飛行機のクラスを決める
                 price = 7000
                 duration = 100
             end
-            #↑↑↑--------------------------------------↑↑↑
+            #↑↑↑↑--------------------------------------↑↑↑
 
             Flight.create(
-                name: "#{airlinename[alnum]}#{alnum+1}#{flightnum}便",  #便番号の百の位は航空会社(1:JAL 2:ANA 3:PEACH)
+                name: "#{airlinename[alnum-1]}#{alnum}#{flightnum}便",  #便番号の百の位は航空会社(1:JAL 2:ANA 3:PEACH)
                 airline_id: alnum,
-                airmodel_id: random.rand(0..2),
+                airmodel_id: random.rand(1..3),
                 departure_date: deptime.to_date,
                 departure_time: deptime,
                 arrival_date: (deptime + duration.minutes).to_date,

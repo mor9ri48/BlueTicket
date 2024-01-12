@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_02_042026) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_03_024029) do
   create_table "administrators", force: :cascade do |t|
     t.string "name", null: false
     t.string "login_name", null: false
@@ -42,6 +42,43 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_02_042026) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "booking_seat_flights", force: :cascade do |t|
+    t.integer "booking_id"
+    t.integer "seat_id"
+    t.integer "flight_id"
+    t.boolean "checkin", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["booking_id"], name: "index_booking_seat_flights_on_booking_id"
+    t.index ["flight_id"], name: "index_booking_seat_flights_on_flight_id"
+    t.index ["seat_id"], name: "index_booking_seat_flights_on_seat_id"
+  end
+
+  create_table "bookings", force: :cascade do |t|
+    t.integer "customer_id"
+    t.integer "flight_id"
+    t.integer "booking_seat_flight_id"
+    t.integer "total_price", null: false
+    t.string "passenger1_name", null: false
+    t.date "passenger1_birthday", null: false
+    t.string "passenger1_email", null: false
+    t.string "passenger1_telephone_number", null: false
+    t.string "passenger2_name"
+    t.date "passenger2_birthday"
+    t.string "passenger2_email"
+    t.string "passenger2_telephone_number"
+    t.string "passenger3_name"
+    t.date "passenger3_birthday"
+    t.string "passenger3_email"
+    t.string "passenger3_telephone_number"
+    t.string "payment_method", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["booking_seat_flight_id"], name: "index_bookings_on_booking_seat_flight_id"
+    t.index ["customer_id"], name: "index_bookings_on_customer_id"
+    t.index ["flight_id"], name: "index_bookings_on_flight_id"
   end
 
   create_table "customers", force: :cascade do |t|

@@ -1,10 +1,10 @@
 class CreateSeats < ActiveRecord::Migration[7.0]
   def change
     create_table :seats do |t|
-      t.references :airmodel            # 飛行機名
-      t.string :number, null: false     # 番号
-      t.string :seat_class, null: false # クラス
-      t.integer :price, null: false     # 席の追加料金
+      t.references :airmodel             # 機体の外部キー
+      t.string :number, null: false      # 席数
+      t.string :seat_class, null: false  # 席のクラス(種類)
+      t.integer :price, null: false      # 席料金
 
       t.timestamps
     end
