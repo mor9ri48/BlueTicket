@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Blue</title>
+    <title><%= page_title %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -11,6 +11,21 @@
   </head>
 
   <body>
-    <%= yield %>
+    <div id="container">
+      <header>
+        <%= render "shared/header" %>
+      </header>
+      <main>
+        <!--フラッシュの文字列を表示する部分-->
+        <% if flash.notice %>
+          <p class="notice"><%= flash.notice %></p>
+        <% end %>
+
+        <%= yield %>
+      </main>
+      <footer>
+        <%= render "shared/footer" %>
+      </footer>
+    </div>
   </body>
 </html>
