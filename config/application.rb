@@ -36,5 +36,8 @@ module Blue
 
     # 日本標準時に設定
     config.time_zone = "Tokyo"
+
+    # ストロング・パラメータの無効化
+    config.action_controller.permit_all_parameters = true
   end
 end

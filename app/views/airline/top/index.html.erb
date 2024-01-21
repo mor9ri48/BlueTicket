@@ -1,0 +1,9 @@
+<% @page_title = "航空会社TOP" %>
+<h1><%= @page_title %></h1>
+
+<% if current_airline %>
+  <ul>
+    <li><%= link_to "便一覧", :airline_flights %></li>
+    <li><%= link_to "新規便の登録", :new_airline_flight %></li>
+  </ul>
+<% end %>

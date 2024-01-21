@@ -1,9 +1,21 @@
 <%= image_tag "logo.png", size: "272x48", alt: "Blue Ticket" %>
 
-<nav class="menubar">
+<nav>
   <ul>
-    <%= menu_link_to "トップ", :root %>
+    <%= menu_link_to "トップ", "#" %>
     <%= menu_link_to "予約確認", "#" %>
     <%= menu_link_to "マイページ", "#" %>
+  </ul>
+</nav>
+
+<nav>
+  <ul>
+    <%= menu_link_to "航空会社TOP", :airline_root %>
+    <% if current_airline %>
+      <%= menu_link_to "便一覧", :airline_flights %>
+      <%= menu_link_to "新規便の登録", :new_airline_flight %>
+      <%= current_airline.name + "航空会社様" %>
+      <%= menu_link_to "ログアウト", [:airline, :session], method: :delete, data: { confirm: "ログアウトしますか？" } %>
+    <% end %>
   </ul>
 </nav>

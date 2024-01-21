@@ -1,0 +1,55 @@
+<% airlines = { "JAL"=>1, "ANA"=>2, "PEACH"=>3 } %>
+<% airmodels = { "エアバスA350-900"=>1, "ボーイング787-8227"=>2, "エンブラエル190"=>3 } %>
+<% airports = { "新千歳"=>1, "羽田"=>2, "成田"=>3, "中部"=>4, "伊丹"=>5, "関西"=>6, "福岡"=>7, "那覇"=>8 } %>
+<% prices = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000, 13000, 14000, 15000, 16000, 17000, 18000, 19000, 20000,
+            21000, 22000, 23000, 24000, 25000, 26000, 27000, 28000, 29000, 30000]%>
+
+<table>
+  <tr>
+    <th><%= form.label :airline_id, "航空会社名" %></th>
+    <td><%= form.select :airline_id, airlines %></td>
+  </tr>
+  <tr>
+    <th><%= form.label :airmodel_id, "機体名" %></th>
+    <td><%= form.select :airmodel_id, airmodels %></td>
+  </tr>
+  <tr>
+    <th><%= form.label :name, "便名" %></th>
+    <td><%= form.text_field :name, size: 20 %></td>
+  </tr>
+  <tr>
+    <th><%= form.label :origin_id, "出発地" %></th>
+    <td><%= form.select :origin_id, airports %></td>
+  </tr>
+  <tr>
+    <th><%= form.label :destination_id, "到着地" %></th>
+    <td><%= form.select :destination_id, airports %></td>
+  </tr>
+  <tr>
+    <th><%= form.label :departure_date, "出発日" %></th>
+    <td><%= form.date_select :departure_date, start_year: 2000, end_year: Time.current.year+50, use_month_numbers: true %></td>
+  </tr>
+  <tr>
+    <th><%= form.label :departure_time, "出発時間" %></th>
+    <td><%= form.time_select :departure_time, minute_step: 5 %></td>
+  </tr>
+  <tr>
+    <th><%= form.label :arrival_date, "到着日" %></th>
+    <td><%= form.date_select :arrival_date, start_year: 2000, end_year: Time.current.year+50, use_month_numbers: true %></td>
+  </tr>
+  <tr>
+    <th><%= form.label :arrival_time, "到着時間" %></th>
+    <td><%= form.time_select :arrival_time, minute_step: 5 %></td>
+  </tr>
+  <tr>
+    <th><%= form.label :price, "料金" %></th>
+    <td>¥<%= form.select :price, prices %>円</td>
+  </tr>
+  <tr>
+    <th><%= form.label :operation, "運航" %></th>
+    <td><%= form.check_box :operation %>運航</td>
+  </tr>
+</table>
+<%= form.submit "作成" %>
+
+<p>※料金はエコノミークラスの料金を指定しください。ビジネスクラスに2000円、ファーストクラスに10000円が、エコノミークラスの料金に自動で追加されます。</p>

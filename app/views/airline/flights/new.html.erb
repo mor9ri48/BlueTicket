@@ -1,0 +1,6 @@
+<% @page_title = "新規便の登録" %>
+<h1><%= @page_title %></h1>
+
+<%= form_for @flight, url: airline_flights_path, method: :post do |form| %>
+  <%= render "form", form: form %>
+<% end %>
