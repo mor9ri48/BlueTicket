@@ -2,15 +2,22 @@
 
 <nav>
   <ul>
-    <%= menu_link_to "トップ", "#" %>
-    <%= menu_link_to "予約確認", "#" %>
-    <%= menu_link_to "マイページ", "#" %>
+    <%= menu_link_to "TOP", "#" %>
+    <%= menu_link_to "管理者TOP", :admin_root %>
+    <%= menu_link_to "航空会社TOP", :airline_root %>
   </ul>
 </nav>
-
 <nav>
   <ul>
-    <%= menu_link_to "航空会社TOP", :airline_root %>
+    <% if current_admin %>
+      <%= menu_link_to "顧客一覧", :admin_customers %>
+      <%= current_admin.name + "管理者" %>
+      <%= menu_link_to "ログアウト", [:admin, :session], method: :delete, data: { confirm: "ログアウトしますか？" } %>
+    <% end %>
+  </ul>
+</nav>
+<nav>
+  <ul>
     <% if current_airline %>
       <%= menu_link_to "便一覧", :airline_flights %>
       <%= menu_link_to "新規便の登録", :new_airline_flight %>

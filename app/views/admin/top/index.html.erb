@@ -1,0 +1,8 @@
+<% @page_title = "管理者TOP" %>
+<h1><%= @page_title %></h1>
+
+<% if current_admin %>
+  <ul>
+    <li><%= link_to "顧客一覧", :admin_customers %></li>
+  </ul>
+<% end %>

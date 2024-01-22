@@ -1,6 +1,6 @@
 Administrator.create(
-  name: "blueticket",
+  name: "Blue Ticket",
   login_name: "blue",
   password: "ticket",
-  password_confimation: "ticket"
+  password_confirmation: "ticket"
 )

@@ -1,0 +1,31 @@
+<% @page_title = "顧客の詳細" %>
+<h1><%= @page_title %></h1>
+
+<p><%= link_to "顧客一覧に戻る", :admin_customers %></p>
+
+<table>
+  <thead>
+    <th>ログイン名</th>
+    <th>名前</th>
+    <th>アルファベット名</th>
+    <th>性別</th>
+    <th>生年月日</th>
+    <th>メールアドレス</th>
+    <th>操作</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><%= @customer.login_name %></td>
+      <td><%= @customer.name %></td>
+      <td><%= @customer.alph_name %></td>
+      <td style="text-align: center"><%= @customer.sex %></td>
+      <td><%= @customer.birthday %></td>
+      <td><%= @customer.email %></td>
+      <td style="text-align: center">
+        <%= link_to "削除", [:admin, @customer], method: :delete, data: { confirm: "本当に削除しますか？" } %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><%= link_to "予約状況に進む", [:admin, @customer, :bookings] %></p>

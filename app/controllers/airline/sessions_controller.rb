@@ -12,6 +12,6 @@ class Airline::SessionsController < Airline::Base
 
   def destroy
     session.delete(:airline_id)
-    redirect_to :airline_root
+    redirect_to :airline_login, notice: "ログアウトしました。"
   end
 end

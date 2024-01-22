@@ -1,0 +1,39 @@
+<% @page_title = "予約の詳細" %>
+<h1><%= @page_title %></h1>
+
+<p><%= link_to "予約状況に戻る", [:admin, @customer, :bookings] %></p>
+<table>
+  <thead>
+    <tr>
+      <th>予約No.</th>
+      <th>便名</th>
+      <th>クラス</th>
+      <th>座席</th>
+      <th>料金</th>
+      <th>決済情報</th>
+      <th>チェックイン状況</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><%= @booking.id %></td>
+      <td><%= Flight.where(id: @booking.flight_id)[0].name %></td>
+      <td><%= Seat.find_by(id: @booking.booking_seat_flight_id).seat_class %></td>
+      <td><%= Seat.find_by(id: @booking.booking_seat_flight_id).number %></td>
+      <td style="text-align: center"><%= @booking.total_price %></td>
+      <td style="text-align: center"><%= @booking.payment_method %></td>
+      <td style="text-align: center">
+        <% if BookingSeatFlight.where(id: @booking.booking_seat_flight_id)[0].checkin %>◯
+        <% else %>×
+        <% end %>
+      </td>
+      <td style="text-align: center">
+        <% unless BookingSeatFlight.where(id: @booking.booking_seat_flight_id)[0].checkin%>
+          <%= link_to "チェックイン", [:admin, @customer, @booking], method: :patch %>｜
+        <% end %>
+        <%= link_to "キャンセル", [:admin, @customer, @booking], method: :delete %>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -6,7 +6,7 @@ BookingSeatFlight.create(
   passenger_birthday: "1981-12-01",
   passenger_email: "matsunaga@example.com",
   passenger_telephone_number: "000-1111-2222",
-  checkin: false
+  checkin: true
   
 )
 
