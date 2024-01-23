@@ -1,0 +1,54 @@
+<% @page_title = "便の検索" %>
+<h1><%= @page_title %></h1>
+
+<p>検索フォーム</p>
+<% if @flights.present? %>
+  <table>
+    <thead>
+      <tr>
+        <th>便名</th>
+        <th>出発地</th>
+        <th>到着地</th>
+        <th>出発日時</th>
+        <th>到着日時</th>
+        <th>クラス</th>
+        <th>料金</th>
+        <th>枚数</th>
+        <th>運航/欠航</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @flights.each do |flight| %>
+        <tr>
+          <td rowspan=4 ><%= link_to flight.name, [:airline, flight] %></td>
+          <td rowspan=4 ><%= Airport.where(id: flight.origin_id)[0].name %></td>
+          <td rowspan=4 ><%= Airport.where(id: flight.destination_id)[0].name %></td>
+          <td rowspan=4 ><%= flight.departure_date.strftime("%Y年%-m月%d日") %><br><%= flight.departure_time.strftime("%-H時%M分") %></td>
+          <td rowspan=4 ><%= flight.arrival_date.strftime("%Y年%-m月%d日") %><br><%= flight.arrival_time.strftime("%-H時%M分") %></td>
+        </tr>
+        <tr>
+          <td>エコノミー</td>
+          <td>¥<%= flight.price %>円</td>
+          <td>残りN枚</td>
+        </tr>
+        <tr>
+          <td>ビジネス</td>
+          <td>¥<%= flight.price + 2000 %>円</td>
+          <td>残りM枚</td>
+          <td style="text-align: center">
+          <% if flight.operation %>運航
+          <% else %>欠航
+          <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td>ファースト</td>
+          <td>¥<%= flight.price + 10000 %>円</td>
+          <td>残りL枚</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>便がありません。検索し直してください。</p>
+<% end %>

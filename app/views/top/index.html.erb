@@ -1,0 +1,16 @@
+<% @page_title = "TOP" %>
+<h1><%= @page_title %></h1>
+
+<h3>欠航のお知らせ</h3>
+<p>欠航の詳細</p>
+
+<ul>
+  <%= menu_link_to "便の検索", :flights %>
+  <% unless current_customer %>
+    <%= menu_link_to "新規アカウント登録", :new_customer %>
+  <% end %>
+  <% if current_customer %>
+    <%= menu_link_to "便の予約確認", [current_customer, :bookings] %>
+    <%= menu_link_to "MyPage", :account %>
+  <% end %>
+</ul>

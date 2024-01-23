@@ -1,7 +1,5 @@
-<% @page_title = "顧客の詳細" %>
+<% @page_title = "MyPage" %>
 <h1><%= @page_title %></h1>
-
-<p><%= link_to "顧客一覧に戻る", :admin_customers %></p>
 
 <table>
   <thead>
@@ -19,13 +17,14 @@
       <td><%= @customer.name %></td>
       <td><%= @customer.alph_name %></td>
       <td style="text-align: center"><%= @customer.sex == 1 ? "男性" : "女性" %></td>
-      <td style="text-align: center"><%= @customer.birthday&.strftime("%Y年%m月%d日") %></td>
-      <td><%= @customer.email %></td>
-      <td style="text-align: center">
-        <%= link_to "削除", [:admin, @customer], method: :delete, data: { confirm: "本当に削除しますか？" } %>
+      <td><%= @customer.birthday&.strftime("%Y年%m月%d日") %></td>
+      <td style="text-align: center"><%= @customer.email %></td>
+      <td>
+        <%= link_to "編集", :edit_account %> |
+        <%= link_to "削除", @customer, method: :delete, data: { confirm: "本当に削除しますか？" } %>
       </td>
     </tr>
   </tbody>
 </table>
 
-<p><%= link_to "予約状況に進む", [:admin, @customer, :bookings] %></p>
+<p><%= link_to "予約状況の確認", [@customer, :bookings] %></p>

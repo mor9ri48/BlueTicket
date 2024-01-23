@@ -1,6 +1,8 @@
 <nav class="menubar">
   <ul>
-    <%= menu_link_to "ログイン", "#" %>
+    <% unless current_customer %>
+      <%= menu_link_to "お客様ログイン", :login_customers %>
+    <% end %>
     <% unless current_admin %>
       <%= menu_link_to "管理者ログイン", :admin_login %>
     <% end %>

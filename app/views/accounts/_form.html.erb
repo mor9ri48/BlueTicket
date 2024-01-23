@@ -1,0 +1,30 @@
+<table>
+  <tr>
+    <th><%= form.label :name, "氏名" %></th>
+    <td><%= form.text_field :name, size: 20 %></td>
+  </tr>
+  <tr>
+    <th><%= form.label :alph_name, "アルファベット名" %></th>
+    <td><%= form.text_field :alph_name, size: 20 %></td>
+  </tr>
+  <tr>
+    <th><%= form.label :login_name, "ログイン名" %></th>
+    <td><%= form.text_field :login_name, size: 20 %></td>
+  </tr>
+  <tr>
+    <th><%= form.label :sex, "性別" %></th>
+    <td>
+      <%= form.radio_button :sex, 1 %>男性
+      <%= form.radio_button :sex, 2 %>女性
+    </td>
+  </tr>
+  <tr>
+    <th><%= form.label :birthday, "生年月日" %></th>
+    <td><%= form.date_select :birthday, start_year: 1900, end_year: Time.current.year, use_month_numbers: true %></td>
+  </tr> 
+  <tr>
+    <th><%= form.label :email, "メールアドレス" %></th>
+    <td><%= form.text_field :email %></td>
+  </tr>
+</table>
+<%= form.submit "更新" %>

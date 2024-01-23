@@ -1,0 +1,56 @@
+<% @page_title = "予約の詳細" %>
+<h1><%= @page_title %></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>予約No.</th>
+      <th>航空会社</th>
+      <th>便名</th>
+      <th>出発地</th>
+      <th>到着地</th>
+      <th>出発日時</th>
+      <th>到着日時</th>
+      <th>クラス</th>
+      <th>座席</th>
+      <th>料金</th>
+      <th>決済情報</th>
+      <th>チェックイン状況</th>
+      <% unless BookingSeatFlight.where(id: @booking.booking_seat_flight_id)[0].checkin%>
+        <th>操作</th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><%= @booking.id %></td>
+      <td style="text-align: center"><%= @flight.airline.name %>航空会社</td>
+      <td><%= Flight.where(id: @booking.flight_id)[0].name %></td>
+      <td><%= Airport.where(id: @flight.origin_id)[0].name %></td>
+      <td><%= Airport.where(id: @flight.destination_id)[0].name %></td>
+      <td><%= @flight.departure_date.strftime("%Y年%-m月%d日") %><br><%=  @flight.departure_time.strftime("%-H時%M分") %></td>
+      <td><%= @flight.arrival_date.strftime("%Y年%-m月%d日") %><br><%=  @flight.arrival_time.strftime("%-H時%M分") %></td>
+      <td><%= Seat.find_by(id: @booking.booking_seat_flight_id).seat_class %></td>
+      <td><%= Seat.find_by(id: @booking.booking_seat_flight_id).number %></td>
+      <td style="text-align: center">¥<%= @booking.total_price %>円</td>
+      <td style="text-align: center"><%= @booking.payment_method %></td>
+      <td style="text-align: center">
+        <% if BookingSeatFlight.where(id: @booking.booking_seat_flight_id)[0].checkin %>◯
+        <% else %>×
+        <% end %>
+      </td>
+      <td style="text-align: center">
+        <% unless BookingSeatFlight.where(id: @booking.booking_seat_flight_id)[0].checkin %>
+          <%= link_to "チェックイン", [@customer, @booking], method: :patch %>｜
+          <%= link_to "キャンセル", [@customer, @booking], method: :delete %>
+        <% end %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>チェックイン後に関する予約の取り消しはできませんのでご了承ください。</p>
+
+<% if BookingSeatFlight.where(id: @booking.booking_seat_flight_id)[0].checkin %>
+  <p><%= link_to "チェックインはこちらから", :checkin_customer_booking %></p>
+<% end %>
