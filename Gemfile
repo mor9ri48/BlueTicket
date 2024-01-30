@@ -24,6 +24,9 @@ gem "bootsnap", require: false
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 
+# メールアドレスのバリデーション
+gem 'email_validator', '~> 1.6'
+
 # パスワードをハッシュ値に変換する関数
 gem 'bcrypt', '~> 3.1.7'
 

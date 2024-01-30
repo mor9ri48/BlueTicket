@@ -76,6 +76,8 @@ GEM
     debug (1.9.0)
       irb (~> 1.10)
       reline (>= 0.3.8)
+    email_validator (1.6.0)
+      activemodel
     erubi (1.12.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -178,6 +180,7 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap
   debug
+  email_validator (~> 1.6)
   puma (~> 5.0)
   rails (~> 7.0.4)
   rails-ujs

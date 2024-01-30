@@ -13,3 +13,8 @@
  *= require_tree .
  *= require_self
  */
+
+ td, th {
+    border: 1px solid #ddd; /* セルの境界線を設定 */
+    padding: 8px; /* セル内の余白を設定 */
+  }

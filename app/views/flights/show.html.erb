@@ -1,0 +1,81 @@
+<% seatClass = 0 %>
+<% if params[:seatClass].present? %>
+  <% seatClass = params[:seatClass].to_i %>
+<% end %>
+<% number_of_rows = 4 %>
+<% if seatClass == 0 %>
+  <% number_of_rows = 4 %>
+<% else %>
+  <% number_of_rows = 2 %>
+<% end %>
+<% number_of_passengers = (1..3).map { |i| ["#{i}人", i] } %>
+
+<% @page_title = "便の詳細" %>
+<h1><%= @page_title %></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>航空会社</th>
+      <th>便名</th>
+      <th>出発地</th>
+      <th>到着地</th>
+      <th>出発日時</th>
+      <th>到着日時</th>
+      <th>クラス</th>
+      <th>料金</th>
+      <th>枚数状況</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=<%=number_of_rows%> ><%= Airline.where(id: @flight.airline_id)[0].name %>航空会社</td>
+      <td rowspan=<%=number_of_rows%> ><%= @flight.name %></td>
+      <td rowspan=<%=number_of_rows%> ><%= Airport.where(id: @flight.origin_id)[0].name %>空港</td>
+      <td rowspan=<%=number_of_rows%> ><%= Airport.where(id: @flight.destination_id)[0].name %>空港</td>
+      <td rowspan=<%=number_of_rows%> ><%= @flight.departure_date.strftime("%Y年%-m月%d日") %><br><%= @flight.departure_time.strftime("%-H時%M分") %></td>
+      <td rowspan=<%=number_of_rows%> ><%= @flight.arrival_date.strftime("%Y年%-m月%d日") %><br><%= @flight.arrival_time.strftime("%-H時%M分") %></td>
+    </tr>
+    <%= form_tag :new_booking_seat_flight, method: :get do %>
+      <%= hidden_field_tag("flight_id", @flight.id) %>
+      <% if seatClass == 0 || seatClass == 1 %>
+        <tr>
+          <td><%= radio_button_tag("seatClass", 1, params[:seatClass] == 1, checked: true) %>エコノミー</td>
+          <td>¥<%= @flight.price + Seat.where("seat_class = ?", "economy")[0].price %>円</td>
+          <td>
+            <% if Airmodel.where(id: @flight.airmodel.id)[0].economy_nums == 0 %>売り切れました。
+            <% else %>残り<%= Airmodel.where(id: @flight.airmodel.id)[0].economy_nums %>枚
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      <% if seatClass == 0 || seatClass == 2 %>
+        <tr>
+          <td><%= radio_button_tag("seatClass", 2, params[:seatClass] == 2) %>ビジネス</td>
+          <td>¥<%= @flight.price + Seat.where("seat_class = ?", "business")[0].price %>円</td>
+          <td>
+            <% if Airmodel.where(id: @flight.airmodel.id)[0].business_nums == 0 %>売り切れました。
+            <% else %>残り<%= Airmodel.where(id: @flight.airmodel.id)[0].business_nums %>枚
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      <% if seatClass == 0 || seatClass == 3 %>
+        <tr>
+          <td><%= radio_button_tag("seatClass", 3, params[:seatClass] == 3) %>ファースト</td>
+          <td>¥<%= @flight.price + Seat.where("seat_class = ?", "first")[0].price %>円</td>
+          <td>
+            <% if Airmodel.where(id: @flight.airmodel.id)[0].first_nums == 0 %>売り切れました。
+            <% else %>残り<%= Airmodel.where(id: @flight.airmodel.id)[0].first_nums %>枚
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td rowspan=<%=number_of_rows%> >人数指定：<%= select_tag "number_of_passengers", options_for_select(number_of_passengers) %></td>
+        <td><%= submit_tag "予約へ進む" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

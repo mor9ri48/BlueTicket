@@ -6,6 +6,7 @@ class CustomersController < ApplicationController
   def create
     @customer = Customer.new(params[:customer])
     if @customer.save
+      session[:customer_id] = @customer.id
       redirect_to :root, notice: "アカウントを登録しました。"
     else
       render "new"

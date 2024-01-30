@@ -1,7 +1,10 @@
 class BookingsController < ApplicationController
+  before_action :customer_login_required
+
   def index
     @customer = Customer.find(params[:customer_id])
     @bookings = @customer.bookings
+     # 予約履歴/予約状況の一覧を表示
     if params[:commit] == "予約履歴の確認"
       past_bookings = Array.new
       @bookings.each do |booking|
@@ -34,21 +37,10 @@ class BookingsController < ApplicationController
     @booking = Booking.find(params[:id])
   end
 
-  def new
-  end
-
-  # チェックイン
-  def update
-    @customer = Customer.find(params[:customer_id])
+  def destroy
+    @customer = Customer.find(current_customer.id)
     @booking = Booking.find(params[:id])
-    @booking_seat_flight = BookingSeatFlight.where(id: @booking.booking_seat_flight_id)[0]
-    unless @booking_seat_flight.checkin
-      @booking_seat_flight.checkin = true
-      if @booking_seat_flight.save
-        redirect_to [@customer, @booking], notice: "チェックインが完了しました。"
-      else
-        redirect_to [@customer, @booking], notice: "チェックインができませんでした。"
-      end
-    end
+    @booking.destroy
+    redirect_to [@customer, :bookings], notice: "予約を取り消しました。"
   end
 end

@@ -1,0 +1,10 @@
+<%# モデルオブジェクトにerrorがある場合(現段階では、バリデーション設定でerror発生)%>
+<% if obj.errors.present? %>
+    <h3>エラーがあります。</h3>
+    <ul>
+      <%# 各errorメッセージの出力%>
+      <% obj.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+<% end %>
