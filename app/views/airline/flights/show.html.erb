@@ -14,7 +14,9 @@
     <th>料金</th>
     <th>枚数</th>
     <th>運航/欠航</th>
-    <th>操作</th>
+    <% if @flight.operation %>
+      <th>操作</th>
+    <% end %>
   </thead>
   <tbody>
     <tr>
@@ -38,11 +40,9 @@
         <% else %>欠航
         <% end %>
       </td>
-      <td style="text-align: center">
-        <% if @flight.operation %><%= link_to "欠航", [:airline, @flight], method: :patch, data: { confirm: "本当に欠航しますか？" } %>
-        <% else %><%= link_to "運航", [:airline, @flight], method: :patch, data: { confirm: "本当に運航しますか？" } %>
-        <% end %>
-      </td>
+      <% if @flight.operation %>
+          <td><%= link_to "欠航", [:airline, @flight], method: :patch, data: { confirm: "本当に欠航しますか？" } %></td>
+      <% end %>
     </tr>
     <tr>
       <td>ファースト</td>

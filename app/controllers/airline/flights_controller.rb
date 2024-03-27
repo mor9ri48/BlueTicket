@@ -30,11 +30,6 @@ class Airline::FlightsController < Airline::Base
       if @flight.save
         redirect_to [:airline, @flight], notice: "便を欠航にしました。"
       end
-    else # 欠航→運航
-      @flight.operation = true
-      if @flight.save
-        redirect_to [:airline, @flight], notice: "便を運航にしました。"
-      end
     end
   end
 

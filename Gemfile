@@ -27,8 +27,15 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 # メールアドレスのバリデーション
 gem 'email_validator', '~> 1.6'
 
+# ページネーション
+gem 'kaminari'
+gem 'kaminari-i18n'
+
 # パスワードをハッシュ値に変換する関数
 gem 'bcrypt', '~> 3.1.7'
+
+# Generates ER-diagrams using Graphviz, a visualization library
+gem 'rails-erd'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

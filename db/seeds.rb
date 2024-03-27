@@ -1,5 +1,14 @@
-table_names = %w(customers airports administrators airlines airmodels seats
-  flights bookings booking_seat_flights)
+table_names = %w(
+  administrators
+  airlines
+  airmodels
+  airports
+  booking_seat_flights
+  bookings
+  customers
+  flights
+  seats
+)
 table_names.each do |table_name|
   # 開発用のテーブルの読み込み
   path = Rails.root.join("db/seeds", Rails.env, table_name + ".rb") # 開発用のテーブルのパス

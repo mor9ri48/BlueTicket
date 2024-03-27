@@ -6,6 +6,12 @@ class ApplicationController < ActionController::Base
 
   class LoginRequired < StandardError; end
 
+  rescue_from LoginRequired, with: :rescue_login_required
+
+  private def rescue_login_required(exception)
+    render "customers/login", status: 403, format: [:html]
+  end
+
   private def customer_login_required
     raise LoginRequired unless current_customer
   end

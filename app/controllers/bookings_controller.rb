@@ -30,6 +30,8 @@ class BookingsController < ApplicationController
     @customer = Customer.find(params[:customer_id])
     @booking = Booking.find(params[:id])
     @flight = @booking.flight
+    @airmodel = @flight.airmodel
+    @booking_seat_flights = BookingSeatFlight.where(booking_id: @booking.id, flight_id: @flight.id)
   end
 
   def checkin

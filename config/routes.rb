@@ -11,7 +11,9 @@ Rails.application.routes.draw do
       get "checkin", on: :member
     end
   end
-  resources :booking_seat_flights, only: [:new, :create, :update]
+  resources :booking_seat_flights, only: [:new, :create, :update] do
+    get "seatChoice", on: :collection
+  end
 
   namespace :admin do
     root "top#index"

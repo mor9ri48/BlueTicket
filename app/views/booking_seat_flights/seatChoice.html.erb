@@ -1,0 +1,67 @@
+<% seat_alphas = %w(A B C D E F) %>
+<% all_seat_nums = @airmodel.economy_nums + @airmodel.business_nums + @airmodel.first_nums %>
+
+<% @page_title = "座席情報の入力" %>
+<h1><%= @page_title %></h1>
+
+<h3>予約する機体の詳細<h3>
+<table>
+  <tr>
+    <th>航空会社</th>
+    <th>機体名</th>
+    <th>全座席数</th>
+  </tr>
+  <tr>
+    <td><%= @airline.name %>航空会社</td>
+    <td><%= @airmodel.name %></td>
+    <td><%= all_seat_nums %>席</td>
+  </tr>
+</table>
+
+<h3>座席表</h3>
+<table>
+  <tr>
+    <th>選択したクラス</th>
+    <td>座席の範囲</td>
+  </tr>
+  <tr>
+    <% if params[:seat_class] == "economy" %>
+      <th>エコノミークラス</th>
+      <td><%= Seat.where(airmodel_id: @airmodel.id, seat_class: "economy").first.number %>〜<%= Seat.where(airmodel_id: @airmodel.id, seat_class: "economy").last.number %></td>
+    <% elsif params[:seat_class] == "business" %>
+      <th>ビジネスクラス</th>
+      <td><%= Seat.where(airmodel_id: @airmodel.id, seat_class: "business").first.number %>〜<%= Seat.where(airmodel_id: @airmodel.id, seat_class: "business").last.number %></td>
+    <% else %>
+      <th>ファーストクラス</th>
+      <td><%= Seat.where(airmodel_id: @airmodel.id, seat_class: "first").first.number %>〜<%= Seat.where(airmodel_id: @airmodel.id, seat_class: "first").last.number %></td>
+    <% end %>
+  </tr>
+</table>
+
+<p><%= params[:number_of_passengers] %>名分の座席をチェックしてください。</p>
+<%= form_tag :new_booking_seat_flight, method: :get do %>
+  <%= hidden_field_tag "flight_id", @flight.id %>
+  <%= hidden_field_tag "seat_class", params[:seat_class] %>
+  <%= hidden_field_tag "number_of_passengers", params[:number_of_passengers] %>
+  <table>
+    <tr>
+      <th></th>
+      <% seat_alphas.each do |alpha| %>
+        <th><%= alpha %></th>
+      <% end %>
+    </tr>
+    <% for num in 1..all_seat_nums/6 %>
+      <tr>
+        <td><%= num %></td>
+        <% seat_alphas.each do |alpha| %>
+          <% if BookingSeatFlight.where("flight_id = ? AND seat_id = ?", @flight.id, Seat.find_by("airmodel_id = ? AND number = ?", "#{@flight.airmodel.id}", "#{alpha}#{num}").id).present? %>
+            <td>❌</td>
+          <% else %>
+            <td><%= check_box_tag "passenger_seat[]", value = "#{alpha}#{num}" %></td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+  <%= submit_tag "搭乗者情報の入力に進む" %>
+<% end %>

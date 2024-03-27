@@ -4,22 +4,22 @@
 <h1><%= @page_title %></h1>
 <% if @bookings.present? %>
   <table>
-  <thead>
-    <tr>
-      <th>予約No.</th>
-      <th>航空会社</th>
-      <th>便名</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @bookings.each do |booking| %>
+    <thead>
       <tr>
-        <td style="text-align: center"><%= booking.id %></td>
-        <td style="text-align: center"><%= booking.flight.airline.name %></td>
-        <td><%= link_to Flight.where(id: booking.flight_id)[0].name, [@customer, booking] %></td>
+        <th>予約No.</th>
+        <th>航空会社</th>
+        <th>便名</th>
       </tr>
-    <% end %>
-  </tbody>
+    </thead>
+    <tbody>
+      <% @bookings.each do |booking| %>
+        <tr>
+          <td style="text-align: center" ><%= booking.id %></td>
+          <td style="text-align: center" ><%= booking.flight.airline.name %>航空会社</td>
+          <td><%= link_to Flight.find_by(id: booking.flight_id).name, [@customer, booking] %></td>
+        </tr>
+      <% end %>
+    </tbody>
   </table>
 <% else %>
   <% if params[:commit] == "予約履歴の確認" %><p>予約履歴はありません。</p>

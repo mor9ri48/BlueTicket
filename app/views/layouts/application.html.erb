@@ -18,7 +18,7 @@
       <main>
         <!--フラッシュの文字列を表示する部分-->
         <% if flash.notice %>
-          <p><%= flash.notice %></p>
+          <p><%== flash.notice %></p>
         <% end %>
 
         <%= yield %>

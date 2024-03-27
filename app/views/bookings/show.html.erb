@@ -1,7 +1,11 @@
-<% booking_seats_of_flight = BookingSeatFlight.where("booking_id = ? AND flight_id = ?", @booking.id, @flight.id) %>
-<% number_of_passengers = 0%>
-<% booked_airmodel = Airmodel.where(id: @flight.airmodel.id)[0] %>
-<% zerotime_checkin = true %>
+<% number_of_passengers = 0 %>
+<% if Seat.find_by(airmodel_id: @airmodel.id).seat_class == "economy" %>
+  <% seat_class = "エコノミー" %>
+<% elsif Seat.find_by(airmodel_id: @airmodel.id).seat_class == "business" %>
+  <% seat_class = "ビジネス" %>
+<% else %>
+  <% seat_class = "ファースト" %>
+<% end %>
 
 <% @page_title = "予約の詳細" %>
 <h1><%= @page_title %></h1>
@@ -15,31 +19,28 @@
       <th>到着地</th>
       <th>出発日時</th>
       <th>到着日時</th>
+      <th>クラス</th>
       <th>合計料金</th>
       <th>決済情報</th>
-      <% if zerotime_checkin %>
-        <th>操作</th>
-      <% end %>
+      <th>操作</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td style="text-align: center"><%= @booking.id %></td>
-      <td><%= Flight.where(id: @booking.flight_id)[0].name %></td>
-      <td><%= Airport.where(id: @flight.origin_id)[0].name %>空港</td>
-      <td><%= Airport.where(id: @flight.destination_id)[0].name %>空港</td>
+      <td><%= @flight.name %></td>
+      <td><%= Airport.find_by(id: @flight.origin_id).name %>空港</td>
+      <td><%= Airport.find_by(id: @flight.destination_id).name %>空港</td>
       <td><%= @flight.departure_date.strftime("%Y年%-m月%d日") %><br><%=  @flight.departure_time.strftime("%-H時%M分") %></td>
       <td><%= @flight.arrival_date.strftime("%Y年%-m月%d日") %><br><%=  @flight.arrival_time.strftime("%-H時%M分") %></td>
+      <td><%= seat_class %></td>
       <td style="text-align: center">¥<%= @booking.total_price %>円</td>
       <td style="text-align: center"><%= @booking.payment_method %></td>
-      <% if zerotime_checkin %>
-        <td><%= link_to "予約取り消し", [@customer, @booking], method: :delete, data: { confirm: "本当に予約を取り消ししますか？" } %></td>
-      <% end %>
+      <td><%= link_to "予約取り消し", [@customer, @booking], method: :delete, data: { confirm: "本当に予約を取り消ししますか？" } %></td>
     </tr>
   </tbody>
 </table>
 
-<% all_seat_nums = booked_airmodel.economy_nums + booked_airmodel.business_nums + booked_airmodel.first_nums %>
 <h3>予約する機体の詳細<h3>
 <table>
   <tr>
@@ -49,17 +50,16 @@
   </tr>
   <tr>
     <td><%= @flight.airline.name %>航空会社</td>
-    <td><%= booked_airmodel.name %></td>
-    <td><%= all_seat_nums %>席</td>
+    <td><%= @airmodel.name %></td>
+    <td><%= @airmodel.economy_nums + @airmodel.business_nums + @airmodel.first_nums %>席</td>
   </tr>
 </table>
 
 <h3>搭乗者の詳細<h3>
 <table>
-  <% booking_seats_of_flight.each do |booking_seat_of_flight| %>
-    <% number_of_passengers += 1%>
-    <h3><%= "搭乗者#{number_of_passengers}" %></h3>
+  <thead>
     <tr>
+      <th>搭乗者No.</th>
       <th>氏名</th>
       <th>座席</th>
       <th>生年月日</th>
@@ -68,30 +68,37 @@
       <th>チェックイン状況</th>
       <th>操作</th>
     </tr>
-    <tr>
-      <td><%= booking_seat_of_flight.passenger_name %></td>
-      <td><%= Seat.find_by(id: booking_seat_of_flight.seat_id).number %></td>
-      <td><%= booking_seat_of_flight.passenger_birthday&.strftime("%Y年%m月%d日") %></td>
-      <td><%= booking_seat_of_flight.passenger_email %></td>
-      <td><%= booking_seat_of_flight.passenger_telephone_number %></td>
-      <td style="text-align: center">
-        <% if booking_seat_of_flight.checkin %>
-          <% zerotime_checkin = true %>
-          ⭕️
-        <% else %>❌
-        <% end %>
-      </td>
-      <td>
-        <% unless booking_seat_of_flight.checkin %>
-          <%= form_tag booking_seat_of_flight, method: :patch do %>
-            <%= submit_tag "チェックイン", data: {confirm: "本当にチェックインしますか？"} %>
+  </thead>
+  <tbody>
+    <% @booking_seat_flights.each do |booking_seat_flight| %>
+      <% number_of_passengers += 1%>
+      <% seat_number = Seat.find_by(id: booking_seat_flight.seat_id).number %>
+      <tr>
+        <td style="text-align: center" ><%= number_of_passengers %></td>
+        <td><%= booking_seat_flight.passenger_name %></td>
+        <td style="text-align: center "><%= seat_number %></td>
+        <td><%= booking_seat_flight.passenger_birthday&.strftime("%Y年%m月%d日") %></td>
+        <td><%= booking_seat_flight.passenger_email %></td>
+        <td><%= booking_seat_flight.passenger_telephone_number %></td>
+        <td style="text-align: center" >
+          <% if booking_seat_flight.checkin %>⭕️
+          <% else %>❌
           <% end %>
-        <% else %>
-          <% link_to "チェックインはこちらから", [:checkin, @customer, @booking] %>
-        <% end %>
-      </td>
-    </tr>
-  <% end %>
+        </td>
+        <td>
+          <% unless booking_seat_flight.checkin %>
+            <%= form_tag :booking_seat_flight, method: :patch do %>
+              <%= hidden_field_tag("airmodel_id", @flight.airmodel_id) %>
+              <%= hidden_field_tag("seat_number", seat_number) %>
+              <%= submit_tag "チェックイン", data: {confirm: "本当にチェックインしますか？"} %>
+            <% end %>
+          <% else %>
+            <%= link_to "チェックインはこちらから", [:checkin, @customer, @booking] %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
 
-<p>チェックイン後に関する予約の取り消しはできませんのでご了承ください。</p>
+<h3>※チェックイン後に関する予約の取り消しはできませんのでご了承ください。</h3>

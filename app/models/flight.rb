@@ -21,17 +21,17 @@ class Flight < ApplicationRecord
   # 出発地・到着地
   validates :destination_id, comparison: { other_than: :origin_id }
 
-  # 出発日・到着日
-  validates :departure_date, comparison: { greater_than: Time.current.to_date }
-  validates :arrival_date, comparison: { greater_than: Time.current.to_date }
+  # 出発日・到着日(過去の便も予約するために一時的にコメントアウトをしている)
+  # validates :departure_date, comparison: { greater_than: Time.current.to_date }
+  # validates :arrival_date, comparison: { greater_than: Time.current.to_date }
 
-  # 出発日・到着日
-  validates :departure_time, comparison: { less_than_or_equal_to: :arrival_time }
-  validates :arrival_time, comparison: { greater_than_or_equal_to: :departure_time }
+  # 出発日・到着日(過去の便も予約するために一時的にコメントアウトをしている)
+  # validates :departure_time, comparison: { less_than_or_equal_to: :arrival_time }
+  # validates :arrival_time, comparison: { greater_than_or_equal_to: :departure_time }
 
   # 便の検索
   class << self
-    def search(origin, destination, date, time, movement, seatClass, minPrice, maxPrice)
+    def search(origin, destination, date, time, movement, seat_class, minPrice, maxPrice)
       rel = order("id")
       if origin.present? && destination.present?
         rel = rel.where(origin_id: origin, destination_id: destination)
@@ -49,14 +49,13 @@ class Flight < ApplicationRecord
       end  
 
       # 残り座席数の確認
-      if seatClass == 3
+      if seat_class == "first"
         seatPrice = Seat.find_by("seat_class = ?", "first").price; 
-      elsif seatClass == 2
+      elsif seat_class == "business"
         seatPrice = Seat.find_by("seat_class = ?", "business").price; 
-      elsif seatClass == 1
+      elsif seat_class == "economy"
         seatPrice = Seat.find_by("seat_class = ?", "economy").price; 
       else
-        #rel = rel.Seat.where("seats.seat_Class IN ('economy', 'business', 'first')")
         seatPrice = Seat.find_by("seat_class = ?", "economy").price; 
       end
 
