@@ -6,9 +6,15 @@
 <% else %>
   <% seat_class = "ファースト" %>
 <% end %>
+<% checkin = false %>
+<% @booking_seat_flights.each do |booking_seat_flight| %>
+  <% if booking_seat_flight.checkin %>
+    <% checkin = true %>
+  <% end %>
+<% end %>
 
 <% @page_title = "予約の詳細" %>
-<h1><%= @page_title %></h1>
+<h1><%= @page_title %>(お客様画面)</h1>
 
 <table>
   <thead>
@@ -22,7 +28,9 @@
       <th>クラス</th>
       <th>合計料金</th>
       <th>決済情報</th>
-      <th>操作</th>
+      <% unless checkin %>
+        <th>操作</th>
+      <% end %>
     </tr>
   </thead>
   <tbody>
@@ -36,7 +44,9 @@
       <td><%= seat_class %></td>
       <td style="text-align: center">¥<%= @booking.total_price %>円</td>
       <td style="text-align: center"><%= @booking.payment_method %></td>
-      <td><%= link_to "予約取り消し", [@customer, @booking], method: :delete, data: { confirm: "本当に予約を取り消ししますか？" } %></td>
+      <% unless checkin %>
+        <td><%= link_to "予約取り消し", [@customer, @booking], method: :delete, data: { confirm: "本当に予約を取り消ししますか？" } %></td>
+      <% end %>
     </tr>
   </tbody>
 </table>
@@ -101,4 +111,4 @@
   </tbody>
 </table>
 
-<h3>※チェックイン後に関する予約の取り消しはできませんのでご了承ください。</h3>
+<h3>※チェックイン後に関する予約の取り消しはできませんので、ご了承ください。</h3>

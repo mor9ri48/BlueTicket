@@ -1,4 +1,6 @@
-<% @page_title = "予約状況" %>
+<% if params[:commit] == "予約履歴の確認" %><% @page_title = "予約履歴" %>
+<% else %><% @page_title = "予約状況" %>
+<% end %>
 <h1><%= @page_title %></h1>
 
 <p><%= link_to "顧客の詳細に戻る", [:admin, @customer] %></p>
@@ -8,32 +10,27 @@
     <thead>
       <tr>
         <th>予約No.</th>
+        <th>航空会社</th>
         <th>便名</th>
-        <th>クラス</th>
-        <th>座席</th>
-        <th>料金</th>
-        <th>決済情報</th>
-        <th>チェックイン状況</th>
       </tr>
     </thead>
     <tbody>
       <% @bookings.each do |booking| %>
         <tr>
           <td style="text-align: center"><%= booking.id %></td>
-          <td><%= link_to Flight.where(id: booking.flight_id)[0].name, [:admin, @customer, booking] %></td>
-          <td><%= Seat.find_by(id: booking.booking_seat_flight_id).seat_class %></td>
-          <td><%= Seat.find_by(id: booking.booking_seat_flight_id).number %></td>
-          <td style="text-align: center"><%= booking.total_price %></td>
-          <td style="text-align: center"><%= booking.payment_method %></td>
-          <td style="text-align: center">
-            <% if BookingSeatFlight.where(id: booking.booking_seat_flight_id)[0].checkin %>◯
-            <% else %>×
-            <% end %>
-          </td>
+          <td style="text-align: center" ><%= booking.flight.airline.name %>航空会社</td>
+          <td><%= link_to Flight.find_by(id: booking.flight_id).name, [:admin, @customer, booking] %></td>
         </tr>
       <% end %>
     </tbody>
   </table>
 <% else %>
-  <p>現在、承った予約はありません。</p>
+  <% if params[:commit] == "予約履歴の確認" %><p>予約履歴はありません。</p>
+  <% else %><p>現在、承った予約はありません。</p>
+  <% end %>
+<% end %>
+<%= form_tag :customer_bookings, method: :get, class: "submit" do %>
+  <% if params[:commit] == "予約履歴の確認" %><p><%= submit_tag "現在の予約状況の確認",  value: "現在の予約状況の確認" %></p>
+  <% else %><p><%= submit_tag "予約履歴の確認", value: "予約履歴の確認" %></p>
+  <% end %>
 <% end %>

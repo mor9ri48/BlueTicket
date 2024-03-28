@@ -20,8 +20,11 @@ Rails.application.routes.draw do
     get "login" => "top#login"
     resources :customers, only: [:index, :show, :destroy] do
       get "search", on: :collection
-      resources :bookings, except: [:new, :edit, :create]
+      resources :bookings, except: [:new, :edit, :create] do
+        get "checkin", on: :member
+      end
     end
+    resources :booking_seat_flights, only: [:update]
     resource :session, only: [:create, :destroy]
   end
 

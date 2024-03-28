@@ -1,0 +1,8 @@
+<% @page_title = "チェックイン" %>
+<h1><%= @page_title %></h1>
+
+<h3>出発日の前日までに、下記のQRコードを読み取るよう、お客様に連絡してください。</h3>
+
+<%= image_tag "QR_976408.png", size: "200x200", alt: "チェックイン用QRコード" %>
+
+<p><%= link_to "予約状況に戻る", [:admin, @customer, @booking] %></p>
