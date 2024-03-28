@@ -5,10 +5,10 @@
   <table>
     <tr>
       <th>本日の欠航のお知らせ</th>
-    </tr>
-    <tr>  
       <% @canceled_flights.each do |canceled_flight| %>
-        <td><%= canceled_flight.name %>：欠航</td>
+        <tr>
+          <td><%= canceled_flight.name %>：欠航</td>
+        </tr>
       <% end %>
     </tr>
   </table>

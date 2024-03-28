@@ -31,7 +31,10 @@ Rails.application.routes.draw do
   namespace :airline do
     root "top#index"
     get "login" => "top#login"
-    resources :flights, except: [:edit, :destroy]
+    resources :flights, except: [:edit, :destroy] do
+      get "search", on: :collection
+      get "wholeCheckin", on: :member
+    end
     resource :session, only: [:create, :destroy]
   end
 end

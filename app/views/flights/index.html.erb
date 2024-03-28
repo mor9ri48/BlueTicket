@@ -51,6 +51,7 @@
 
 <h3>検索一覧</h3>
 <% if @flights.present? %>
+  <%= paginate @flights %>
   <table>
     <thead>
       <tr>
@@ -73,7 +74,7 @@
           <%= hidden_field_tag("flight_id", flight.id) %>
           <% if flight.operation %>
             <tr>
-              <td rowspan=<%=number_of_rows%> ><%= flight.id %></td>
+              <td rowspan=<%=number_of_rows%> style="text-align: center" ><%= flight.id %></td>
               <td rowspan=<%=number_of_rows%> ><%= flight.name %></td>
               <td rowspan=<%=number_of_rows%> ><%= Airport.find_by(id: flight.origin_id).name %>空港</td>
               <td rowspan=<%=number_of_rows%> ><%= Airport.find_by(id: flight.destination_id).name %>空港</td>
@@ -116,6 +117,10 @@
                     残り<%= the_rest_of_seats(flight, "business") %>枚
                   <% end %>
                 </td>
+                <% if params[:seat_class] == "business" %>
+                  <td rowspan=<%=number_of_rows%> ><%= select_tag "number_of_passengers", options_for_select(number_of_passengers) %></td>
+                  <td rowspan=<%=number_of_rows%> ><%= submit_tag "座席選択へ進む" %></td>
+                <% end %>
               </tr>
             <% end %>
             <% if params[:seat_class] == "no_design" || params[:seat_class] == "first" %>
@@ -124,6 +129,10 @@
                   <td style="text-align: center" >ファースト</td>
                   <td style="text-align: center" >設定なし</td>
                   <td style="text-align: center" >設定なし</td>
+                  <% if params[:seat_class] == "first" %>
+                    <td style="text-align: center" >ー</td>
+                    <td style="text-align: center" >ー</td>
+                  <% end %>
                 <% else %>
                   <td style="text-align: center" >
                     <% unless the_rest_of_seats(flight, "first") == 0 %>
@@ -139,6 +148,10 @@
                       残り<%= the_rest_of_seats(flight, "first") %>枚
                     <% end %>
                   </td>
+                  <% if params[:seat_class] == "first" %>
+                    <td rowspan=<%=number_of_rows%> ><%= select_tag "number_of_passengers", options_for_select(number_of_passengers) %></td>
+                    <td rowspan=<%=number_of_rows%> ><%= submit_tag "座席選択へ進む" %></td>
+                  <% end %>
                 <% end %>  
               <tr>
             <% end %>  

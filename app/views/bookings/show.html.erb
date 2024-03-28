@@ -20,6 +20,7 @@
   <thead>
     <tr>
       <th>予約No.</th>
+      <th>便No.</th>
       <th>便名</th>
       <th>出発地</th>
       <th>到着地</th>
@@ -36,6 +37,7 @@
   <tbody>
     <tr>
       <td style="text-align: center"><%= @booking.id %></td>
+      <td style="text-align: center"><%= @flight.id %></td>
       <td><%= @flight.name %></td>
       <td><%= Airport.find_by(id: @flight.origin_id).name %>空港</td>
       <td><%= Airport.find_by(id: @flight.destination_id).name %>空港</td>
