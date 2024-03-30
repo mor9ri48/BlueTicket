@@ -11,21 +11,19 @@
   </head>
 
   <body>
-    <div id="container">
-      <header>
-        <%= render "shared/header" %>
-      </header>
-      <main>
-        <!--フラッシュの文字列を表示する部分-->
-        <% if flash.notice %>
-          <p><%== flash.notice %></p>
-        <% end %>
+    <header>
+      <%= render "shared/header" %>
+    </header>
+    <main>
+      <!--フラッシュの文字列を表示する部分-->
+      <% if flash.notice %>
+        <p><%== flash.notice %></p>
+      <% end %>
 
-        <%= yield %>
-      </main>
-      <footer>
-        <%= render "shared/footer" %>
-      </footer>
-    </div>
+      <%= yield %>
+    </main>
+    <footer>
+      <%= render "shared/footer" %>
+    </footer>
   </body>
 </html>

@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   root "top#index"
+  get "bad_request" => "top#bad_request"
+  get "forbidden" => "top#forbidden"
+  get "internal_server_error" => "top#internal_server_error"
   resources :flights, only: [:index, :show] do
     get "search", on: :collection
   end
@@ -17,7 +20,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     root "top#index"
-    get "login" => "top#login"
+    get "login" => "login#login"
     resources :customers, only: [:index, :show, :destroy] do
       get "search", on: :collection
       resources :bookings, except: [:new, :edit, :create] do
@@ -30,7 +33,7 @@ Rails.application.routes.draw do
 
   namespace :airline do
     root "top#index"
-    get "login" => "top#login"
+    get "login" => "login#login"
     resources :flights, except: [:edit, :destroy] do
       get "search", on: :collection
       get "wholeCheckin", on: :member

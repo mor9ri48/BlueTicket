@@ -1,7 +1,4 @@
-<% airports = [["指定しない", 0], ["新千歳空港", 1], ["羽田空港", 2], ["成田空港", 3], ["中部空港", 4], ["伊丹空港", 5], ["関西空港", 6], ["福岡空港", 7], ["那覇空港", 8]] %>
-<% seat_classes = [["指定しない", "no_design"], ["エコノミー", "economy"], ["ビジネス", "business"], ["ファースト", "first"]] %>
 <% number_of_passengers = (1..3).map { |i| ["#{i}人", i] } %>
-<% prices = (1..30).map { |i| ["#{i * 1000}", i * 1000] } %>
 <% if params[:seat_class] == "no_design" %>
   <% number_of_rows = 4 %>
 <% else %>
@@ -11,45 +8,18 @@
 <% @page_title = "便一覧(航空会社画面)" %>
 <h1><%= @page_title %></h1>
 
-<h3>検索フォーム</h3>
+<h3>現在の予約状況の確認方法</h3>
+<ol>
+  <li><%= link_to "便一覧", :airline_flights %>から、便名をクリックして、指定の便を選択する。</li>
+  <li>便の詳細ページにて、<%= submit_tag "全体の予約状況の確認" %>をクリックする。</li>
+  <li>機体の詳細と各クラスの情報、現在の便のチェックイン状況を確認できます。</li>
+</ol>
+<p><%= link_to "新規便の登録", :new_airline_flight %></p>
+
 <%= form_tag :search_airline_flights, method: :get do %>
-  <table>
-    <tr>
-      <th>出発地</th>
-      <td><%= select_tag "origin", options_for_select(airports) %></td>
-    </tr>
-    <tr>
-      <th>到着地</th>
-      <td><%= select_tag "destination", options_for_select(airports) %></td>
-    </tr>
-    <tr>
-      <th>日付</th>
-      <td><%= date_field_tag "date" %></td>
-    </tr>
-    <tr>
-      <th>時刻</th>
-      <td>
-        <%= time_field_tag "time" %>
-        <%= radio_button_tag "movement", "出発", params[:movement] == "出発" %>出発
-        <%= radio_button_tag "movement", "到着", params[:movement] == "到着" %>到着
-      </td>
-    </tr>
-    <tr>
-      <th>クラス</th>
-      <td><%= select_tag "seat_class", options_for_select(seat_classes) %></td>
-    </tr>
-    <tr>
-      <th>料金</th>
-      <td>
-        ¥<%= select_tag "minPrice", options_for_select(prices, 1000) %>円 〜 
-        ¥<%= select_tag "maxPrice", options_for_select(prices, 30000) %>円
-      </td>
-    </tr>
-  </table>
+  <%= render "shared/flight_search_form" %>
   <%= submit_tag "検索" %>
 <% end %>
-
-<p><%= link_to "新規便の登録", :new_airline_flight %></p>
 
 <h3>検索一覧</h3>
 <% if @flights.present? %>
@@ -58,6 +28,7 @@
     <thead>
       <tr>
         <th>便No.</th>
+        <th>航空会社</th>
         <th>便名</th>
         <th>出発地</th>
         <th>到着地</th>
@@ -74,11 +45,16 @@
         <%= hidden_field_tag("flight_id", flight.id) %>
         <tr>
           <td rowspan=<%=number_of_rows%> style="text-align: center" ><%= flight.id %></td>
-          <td rowspan=<%=number_of_rows%> ><%= link_to flight.name, [:airline, flight] %></td>
-          <td rowspan=<%=number_of_rows%> ><%= Airport.find_by(id: flight.origin_id).name %>空港</td>
-          <td rowspan=<%=number_of_rows%> ><%= Airport.find_by(id: flight.destination_id).name %>空港</td>
-          <td rowspan=<%=number_of_rows%> ><%= flight.departure_date.strftime("%Y年%-m月%d日") %><br><%= flight.departure_time.strftime("%-H時%M分") %></td>
-          <td rowspan=<%=number_of_rows%> ><%= flight.arrival_date.strftime("%Y年%-m月%d日") %><br><%= flight.arrival_time.strftime("%-H時%M分") %></td>
+          <td rowspan=<%=number_of_rows%> ><%= Airline.find_by(id: flight.airline_id).name %>航空会社</td>
+          <% if flight.airline_id == current_airline.id %>
+            <td rowspan=<%=number_of_rows%> ><%= link_to flight.name, [:airline, flight] %></td>
+          <% else %>
+            <td rowspan=<%=number_of_rows%> ><%= flight.name %></td>
+          <% end %>
+          <td rowspan=<%=number_of_rows%> style="text-align: center" ><%= Airport.find_by(id: flight.origin_id).name %>空港</td>
+          <td rowspan=<%=number_of_rows%> style="text-align: center" ><%= Airport.find_by(id: flight.destination_id).name %>空港</td>
+          <td rowspan=<%=number_of_rows%> style="text-align: center" ><%= flight.departure_date.strftime("%Y年%-m月%d日") %><br><%= flight.departure_time.strftime("%-H時%M分") %></td>
+          <td rowspan=<%=number_of_rows%> style="text-align: center" ><%= flight.arrival_date.strftime("%Y年%-m月%d日") %><br><%= flight.arrival_time.strftime("%-H時%M分") %></td>
         </tr>
         <% if params[:seat_class] == "no_design" || params[:seat_class] == "economy" %>
           <tr>
@@ -105,6 +81,13 @@
               <% else %>残り<%= the_rest_of_seats(flight, "business") %>枚
               <% end %>
             </td>
+            <% if params[:seat_class] == "business" %>
+              <td rowspan=<%=number_of_rows%> style="text-align: center" >
+                <% if flight.operation %>運航
+                <% else %>欠航
+                <% end %>
+              </td>
+            <% end %>
           </tr>
         <% end %>
         <% if params[:seat_class] == "no_design" || params[:seat_class] == "first" %>
@@ -121,6 +104,13 @@
                 <% else %>残り<%= the_rest_of_seats(flight, "first") %>枚
                 <% end %>
               </td>
+              <% if params[:seat_class] == "first" %>
+                <td rowspan=<%=number_of_rows%> style="text-align: center" >
+                  <% if flight.operation %>運航
+                  <% else %>欠航
+                  <% end %>
+                </td>
+              <% end %>
             <% end %>  
           <tr>
         <% end %>

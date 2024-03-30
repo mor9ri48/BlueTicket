@@ -38,6 +38,11 @@ module Blue
     config.time_zone = "Tokyo"
 
     # ストロング・パラメータの無効化
-    config.action_controller.permit_all_parameters = false
+    config.action_controller.permit_all_parameters = true
+
+    # To handle exceptions that occur outside of ActionController.
+    config.exceptions_app = ->(env) do
+      ErrorsController.action(:show).call(env)
+    end
   end
 end

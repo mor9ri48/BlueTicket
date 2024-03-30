@@ -1,0 +1,54 @@
+<% airports = [["指定なし", 0], ["新千歳空港", 1], ["羽田空港", 2], ["成田空港", 3], ["中部空港", 4], ["伊丹空港", 5], ["関西空港", 6], ["福岡空港", 7], ["那覇空港", 8]] %>
+<% seat_classes = [["指定なし", "no_design"], ["エコノミー", "economy"], ["ビジネス", "business"], ["ファースト", "first"]] %>
+<% prices = (1..30).map { |i| ["#{i * 1000}", i * 1000] } %>
+<% if params[:minPrice].present? %>
+  <% selected_minPrice = params[:minPrice] %>
+<% else %>
+  <% selected_minPrice = 1000 %>
+<% end %>
+<% if params[:maxPrice].present? %>
+  <% selected_maxPrice = params[:maxPrice] %>
+<% else %>
+  <% selected_maxPrice = 30000 %>
+<% end %>
+
+  <h3>検索フォーム</h3>
+  <p>
+    検索する際の注意点
+    <br>※出発地と到着地の両方を指定してください。
+    <br>※日付と時刻は、現在以降の日時を指定してください。
+    <br>※クラスを指定しない場合、エコノミークラスの料金を下限料金として指定します。
+  </p>
+  <table>
+    <tr>
+      <th>出発地</th>
+      <td><%= select_tag "origin", options_for_select(airports, selected: params[:origin]) %></td>
+    </tr>
+    <tr>
+      <th>到着地</th>
+      <td><%= select_tag "destination", options_for_select(airports, selected: params[:destination]) %></td>
+    </tr>
+    <tr>
+      <th>日付</th>
+      <td><%= date_field("date", "date", value: params[:date][:date]) %></td>
+    </tr>
+    <tr>
+      <th>時刻</th>
+      <td>
+        <%= time_field("time", "time", value: params[:time][:time])%>
+        <%= radio_button_tag "movement", "出発", params[:movement] == "出発", selected: params[:movement] %>出発
+        <%= radio_button_tag "movement", "到着", params[:movement] == "到着", selected: params[:movement] %>到着
+      </td>
+    </tr>
+    <tr>
+      <th>クラス</th>
+      <td><%= select_tag "seat_class", options_for_select(seat_classes, selected: params[:seat_class]) %></td>
+    </tr>
+    <tr>
+      <th>料金</th>
+      <td>
+        ¥<%= select_tag "minPrice", options_for_select(prices, selected: selected_minPrice) %>円 〜 
+        ¥<%= select_tag "maxPrice", options_for_select(prices, selected: selected_maxPrice)%>円
+      </td>
+    </tr>
+  </table>

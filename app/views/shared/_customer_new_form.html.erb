@@ -1,5 +1,14 @@
 <%= render "shared/errors", obj: @customer %>
 
+<h3>登録フォーム</h3>
+<p>
+  入力する際の注意点
+  <br>※氏名・アルファベット名・ログイン名は、それぞれ2文字以上20文字以下で入力してください。
+  <br>※アルファベット名は、1文字目の空白を避けて入力ください。大文字小文字を問いません。
+  <br>※ログイン名は、英数字のみ入力できます。
+  <br>※パスワードは、4文字以上16文字以下で入力してください。
+</p>
+
 <table>
   <tr>
     <th><%= form.label :name, "氏名" %></th>
@@ -37,4 +46,3 @@
     <td><%= form.password_field :password_confirmation %></td>
   </tr>
 </table>
-<%= form.submit "作成" %>

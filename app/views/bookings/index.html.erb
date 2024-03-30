@@ -26,7 +26,7 @@
   <% else %><p>現在の予約はありません。</p>
   <% end %>
 <% end %>
-<%= form_tag :customer_bookings, method: :get, class: "submit" do %>
+<%= form_tag :customer_bookings, method: :get do %>
     <% if params[:commit] == "予約履歴の確認" %><p><%= submit_tag "現在の予約状況の確認",  value: "現在の予約状況の確認" %></p>
     <% else %><p><%= submit_tag "予約履歴の確認", value: "予約履歴の確認" %></p>
     <% end %>

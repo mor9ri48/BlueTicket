@@ -1,6 +1,4 @@
-class Admin::BookingsController < ApplicationController
-  before_action :admin_login_required
-
+class Admin::BookingsController < Admin::Base
   def index
     @customer = Customer.find(params[:customer_id])
     @bookings = @customer.bookings
@@ -41,8 +39,12 @@ class Admin::BookingsController < ApplicationController
 
   def destroy
     @customer = Customer.find(params[:customer_id])
-    @booking = Booking.find(params[:id])
-    @booking.destroy
-    redirect_to [:admin, @customer, :bookings], notice: "予約をキャンセルしました。"
+    @booking = Booking.find_by(params[:id])
+    if @booking
+      @booking.destroy
+      redirect_to [:admin, @customer, :bookings], notice: "予約を取り消しました。"
+    else
+      redirect_to [:admin, @customer, :bookings], notice: "既に予約が取り消されています。"
+    end
   end
 end

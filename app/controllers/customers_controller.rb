@@ -7,7 +7,7 @@ class CustomersController < ApplicationController
     @customer = Customer.new(params[:customer])
     if @customer.save
       session[:customer_id] = @customer.id
-      redirect_to :root, notice: "アカウントを登録しました。"
+      redirect_to :root, notice: "会員を登録しました。"
     else
       render "new"
     end
@@ -15,7 +15,11 @@ class CustomersController < ApplicationController
 
   def destroy
     @customer = current_customer
-    @customer.destroy
-    redirect_to :root, notice: "アカウントを削除しました。"
+    if @customer
+      @customer.destroy
+      redirect_to :root, notice: "アカウントを削除しました。"
+    else
+      redirect_to :root, notice: "既にアカウントが削除されています。"
+    end
   end
 end

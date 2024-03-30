@@ -1,11 +1,9 @@
 <% @page_title = "顧客一覧" %>
 <h1><%= @page_title %></h1>
 
-<%= form_tag :search_admin_customers, method: :get, class: "search" do %>
-  <%= text_field_tag "q", params[:q] %>
-  <%= submit_tag "検索" %>
-<% end %>
+<%= render "admin/shared/customer_search_form" %>
 
+<h3>検索一覧</h3>
 <% if @customers.present? %>
   <table>
     <thead>

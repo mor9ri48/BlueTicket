@@ -1,0 +1,16 @@
+<% if flash.alert %><%= flash.alert %><% end %>
+<%= form_tag :session do %>
+  <div>
+    <label>ログイン名：</label>
+    <input type="text" name="login_name">
+  </div>
+  <div>
+    <label>パスワード：</label>
+    <input type="password" name="password">
+  </div>
+  <div>
+    <input type="submit" value="ログイン">
+  </div>
+<% end %>
+
+<p><%= link_to "新規会員登録はこちら", :new_customer %></p>

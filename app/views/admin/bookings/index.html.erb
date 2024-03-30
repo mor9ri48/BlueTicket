@@ -1,5 +1,5 @@
 <% if params[:commit] == "予約履歴の確認" %><% @page_title = "予約履歴" %>
-<% else %><% @page_title = "予約状況" %>
+<% else %><% @page_title = "現在の予約状況" %>
 <% end %>
 <h1><%= @page_title %></h1>
 
@@ -29,7 +29,7 @@
   <% else %><p>現在、承った予約はありません。</p>
   <% end %>
 <% end %>
-<%= form_tag :customer_bookings, method: :get, class: "submit" do %>
+<%= form_tag :admin_customer_bookings, method: :get do %>
   <% if params[:commit] == "予約履歴の確認" %><p><%= submit_tag "現在の予約状況の確認",  value: "現在の予約状況の確認" %></p>
   <% else %><p><%= submit_tag "予約履歴の確認", value: "予約履歴の確認" %></p>
   <% end %>

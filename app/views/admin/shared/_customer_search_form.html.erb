@@ -1,0 +1,16 @@
+<% sexes = [["指定なし", 0], ["男性", 1], ["女性", 2]] %>
+
+<%= form_tag :search_admin_customers, method: :get do %>
+  <h3>検索フォーム</h3>
+  <table>
+    <tr>
+      <th>検索ワード</th>
+      <td><%= text_field_tag "q", params[:q] %></td>
+    </tr>
+    <tr>
+      <th>性別</th>
+      <td><%= select_tag "sex", options_for_select(sexes, selected: params[:sex]) %></td>
+    </tr>
+  </table>
+  <%= submit_tag "検索" %>
+<% end %>

@@ -1,6 +1,4 @@
-class Admin::BookingSeatFlightsController < ApplicationController
-  before_action :admin_login_required
-
+class Admin::BookingSeatFlightsController < Admin::Base
   # チェックイン
   def update
     @customer = Customer.find(params[:customer_id])

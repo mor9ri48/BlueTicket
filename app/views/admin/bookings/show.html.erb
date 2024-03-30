@@ -15,7 +15,7 @@
 
 <% @page_title = "予約の詳細(管理者画面)" %>
 <h1><%= @page_title %></h1>
-
+<%= link_to "予約一覧に戻る", [:admin, @customer, :bookings] %>
 <table>
   <thead>
     <tr>
@@ -112,5 +112,3 @@
   </tbody>
 </table>
 <h3>※チェックイン後に関する予約の取り消しはできませんので、注意してください。</h3>
-
-<%= link_to "予約一覧に戻る", [:admin, @customer, :bookings] %>

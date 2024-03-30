@@ -1,6 +1,13 @@
 <% @page_title = "便の詳細(航空会社画面)" %>
 <h1><%= @page_title %></h1>
 
+<h3>現在の予約状況の確認方法</h3>
+<ol>
+  <li><%= link_to "便一覧", :airline_flights %>から、便名をクリックして、指定の便を選択する。</li>
+  <li>便の詳細ページにて、<%= submit_tag "全体の予約状況の確認" %>をクリックする。</li>
+  <li>機体の詳細と各クラスの情報、現在の便のチェックイン状況を確認できます。</li>
+</ol>
+
 <p><%= link_to "便一覧に戻る", :airline_flights %></p>
 
 <table>
@@ -71,7 +78,7 @@
     </tr>
   </tbody>
 </table>
-<p>※欠航を設定した後、再び運航に設定することはできないため、ご了承ください。</p>
+<p>※欠航に設定した後、再び運航に設定することはできないため、ご了承ください。</p>
 
 <%= form_tag :wholeCheckin_airline_flight, method: :get do %>
   <%= hidden_field_tag("flight_id", @flight.id) %>

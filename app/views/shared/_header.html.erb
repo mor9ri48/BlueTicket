@@ -1,39 +1,34 @@
 <%= image_tag "logo.png", size: "272x48", alt: "Blue Ticket" %>
-
-<nav>
+<ul>
+  <%= menu_link_to "TOP", :root %>
+  <%= menu_link_to "便の検索", :flights %>
+</ul>
+<% if current_customer %>
   <ul>
-    <%= menu_link_to "TOP", :root %>
-    <%= menu_link_to "管理者TOP", :admin_root %>
-    <%= menu_link_to "航空会社TOP", :airline_root %>
-  </ul>
-</nav>
-<nav>
-  <ul>
-    <%= menu_link_to "便の検索", :flights %>
-    <% if current_customer %>
     <%= menu_link_to "予約状況", [current_customer, :bookings] %>
     <%= menu_link_to "MyPage", :account %>
-      <%= current_customer.name + "様" %>
-      <%= menu_link_to "ログアウト", :session, method: :delete, data: { confirm: "ログアウトしますか？" } %>
-    <% end %>
+    <%= current_customer.name + "様" %>
+    <%= menu_link_to "ログアウト", :session, method: :delete, data: { confirm: "ログアウトしますか？" } %>
   </ul>
-</nav>
-<nav>
+<%  elsif current_admin %>
   <ul>
-    <% if current_admin %>
-      <%= menu_link_to "顧客一覧", :admin_customers %>
-      <%= current_admin.name + "管理者" %>
-      <%= menu_link_to "ログアウト", [:admin, :session], method: :delete, data: { confirm: "ログアウトしますか？" } %>
-    <% end %>
+    <%= menu_link_to "管理者TOP", :admin_root %>
+    <%= menu_link_to "顧客一覧", :admin_customers %>
+    <%= current_admin.name + "管理者" %>
+    <%= menu_link_to "ログアウト", [:admin, :session], method: :delete, data: { confirm: "ログアウトしますか？" } %>
   </ul>
-</nav>
-<nav>
+<% elsif current_airline %>
   <ul>
-    <% if current_airline %>
-      <%= menu_link_to "便一覧", :airline_flights %>
-      <%= menu_link_to "新規便の登録", :new_airline_flight %>
-      <%= current_airline.name + "航空会社様" %>
-      <%= menu_link_to "ログアウト", [:airline, :session], method: :delete, data: { confirm: "ログアウトしますか？" } %>
-    <% end %>
+    <%= menu_link_to "航空会社TOP", :airline_root %>
+    <%= menu_link_to "便一覧", :airline_flights %>
+    <%= menu_link_to "新規便の登録", :new_airline_flight %>
+    <%= current_airline.name + "航空会社様" %>
+    <%= menu_link_to "ログアウト", [:airline, :session], method: :delete, data: { confirm: "ログアウトしますか？" } %>
   </ul>
-</nav>
+<% else %>
+  <ul>
+    <%= menu_link_to "お客様ログイン", :login_customers %>
+    <%= menu_link_to "管理者ログイン", :admin_login %>
+    <%= menu_link_to "航空会社ログイン", :airline_login %>
+  </ul>
+<% end %>

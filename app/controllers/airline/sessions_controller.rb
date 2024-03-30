@@ -1,4 +1,4 @@
-class Airline::SessionsController < Airline::Base
+class Airline::SessionsController < ApplicationController
   def create
     airline = Airline.find_by(login_name: params[:login_name])
     if airline&.authenticate(params[:password])

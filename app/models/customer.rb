@@ -27,16 +27,20 @@ class Customer < ApplicationRecord
   # パスワード
   attr_accessor :current_password
   validates :password, presence: { if: :current_password },
-            length: { minimum: 2, maximum: 16, allow_blank: true }
+            length: { minimum: 4, maximum: 16, allow_blank: true }
 
   # 顧客検索
   class << self
-    def search(query)
+    def search(query, sex)
       rel = order("id")
       if query.present?
-        rel = rel.where("login_name LIKE ? OR name LIKE ? OR alph_name LIKE ?", "%#{query}%", "%#{query}%", "%#{query}%")
+        rel = rel.where("login_name LIKE ? OR name LIKE ? OR alph_name LIKE ?", "#{query}", "#{query}", "#{query}")
       end
-      rel
+      if sex.to_i == 0
+        rel = rel.where("sex = ? OR sex = ?", 1, 2)
+      else
+        rel = rel.where(sex: sex.to_i)
+      end
     end
   end
 end

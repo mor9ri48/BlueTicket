@@ -41,8 +41,12 @@ class BookingsController < ApplicationController
 
   def destroy
     @customer = Customer.find(current_customer.id)
-    @booking = Booking.find(params[:id])
-    @booking.destroy
-    redirect_to [@customer, :bookings], notice: "予約を取り消しました。"
+    @booking = Booking.find_by(id: params[:id])
+    if @booking
+      @booking.destroy
+      redirect_to [@customer, :bookings], notice: "予約を取り消しました。"
+    else
+      redirect_to [@customer, :bookings], notice: "既に予約が取り消されています。"
+    end
   end
 end

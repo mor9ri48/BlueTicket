@@ -1,12 +1,11 @@
 class Admin::CustomersController < Admin::Base
-  before_action :admin_login_required
-
   def index
     @customers = Customer.order(params[:id])
+    params[:sex] == 0
   end
 
   def search
-    @customers = Customer.search(params[:q])
+    @customers = Customer.search(params[:q], params[:sex])
     render "index"
   end
 
@@ -16,7 +15,11 @@ class Admin::CustomersController < Admin::Base
 
   def destroy
     @customer = Customer.find(params[:id])
-    @customer.destroy
-    redirect_to :admin_customers, notice: "顧客を削除しました。"
+    if @customer
+      @customer.destroy
+      redirect_to :admin_customers, notice: "アカウントを削除しました。"
+    else
+      redirect_to :admin_customers, notice: "既にアカウントが削除されています。"
+    end
   end
 end
