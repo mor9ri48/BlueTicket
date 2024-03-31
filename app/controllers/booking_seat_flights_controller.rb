@@ -49,8 +49,9 @@ class BookingSeatFlightsController < ApplicationController
       end
     end
     if seat_exist
+      @booking.destroy
       redirect_to :flights, notice: "既に座席が予約されています。"
-    elsif @booking.save
+    else
       for number in 0..params[:number_of_passengers].to_i-1 do
         @seat = Seat.find_by(airmodel_id: params[:airmodel_id].to_i, number: params[:passenger_seat][number], seat_class: params[:seat_class])
         @booking_seat_flight = BookingSeatFlight.create(booking_id: @booking.id, flight_id: @flight.id, seat_id: @seat.id,
@@ -75,7 +76,7 @@ class BookingSeatFlightsController < ApplicationController
           end
           @booking.destroy
           redirect_to request.referer, notice: "搭乗者情報の入力エラーがあります<br>#{error_message}"
-        elsif @booking_seat_flight.save
+        elsif @booking.save && @booking_seat_flight.save
           redirect_to [@customer, :bookings], notice: "便を予約しました。"
         else
           redirect_to request.referer, notice: "便を予約できませんでした。"
@@ -94,7 +95,7 @@ class BookingSeatFlightsController < ApplicationController
           end
           @booking.destroy
           redirect_to request.referer, notice: "搭乗者情報の入力エラーがあります<br>#{error_message}"
-        elsif @booking_seat_flight.save
+        elsif @booking.save && @booking_seat_flight.save
           redirect_to [@customer, :bookings], notice: "便を予約しました。"
         else
           redirect_to request.referer, notice: "便を予約できませんでした。"
@@ -123,8 +124,6 @@ class BookingSeatFlightsController < ApplicationController
           redirect_to request.referer, notice: "便を予約できませんでした。"
         end
       end
-    else
-      redirect_to request.referer, notice: "便を予約できませんでした。"
     end
   end
 

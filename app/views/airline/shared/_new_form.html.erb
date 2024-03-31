@@ -37,19 +37,19 @@
   </tr>
   <tr>
     <th><%= form.label :departure_date, "出発日" %></th>
-    <td><%= form.date_select :departure_date, start_year: 2000, end_year: Time.current.year+50, use_month_numbers: true %></td>
+    <td><%= form.date_field(:departure_date) %></td>
   </tr>
   <tr>
-    <th><%= form.label :departure_time, "出発時間" %></th>
-    <td><%= form.time_select :departure_time, minute_step: 5 %></td>
+    <th><%= form.label :departure_time, "出発時刻" %></th>
+    <td><%= form.time_field(:departure_time) %></td>
   </tr>
   <tr>
     <th><%= form.label :arrival_date, "到着日" %></th>
-    <td><%= form.date_select :arrival_date, start_year: 2000, end_year: Time.current.year+50, use_month_numbers: true %></td>
+    <td><%= form.date_field(:arrival_date) %></td>
   </tr>
   <tr>
-    <th><%= form.label :arrival_time, "到着時間" %></th>
-    <td><%= form.time_select :arrival_time, minute_step: 5 %></td>
+    <th><%= form.label :arrival_time, "到着時刻" %></th>
+    <td><%= form.time_field(:arrival_time) %></td>
   </tr>
   <tr>
     <th><%= form.label :price, "料金" %></th>

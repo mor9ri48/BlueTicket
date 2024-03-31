@@ -37,14 +37,12 @@ class Airline::FlightsController < Airline::Base
   end
 
   def new
-    @flight = Flight.new
+    @flight = Flight.new(departure_date: Date.current, departure_time: Time.current.strftime("%H:%M"), arrival_date: Date.current, arrival_time: Time.current.strftime("%H:%M"))
   end
 
   def create
     @flight = Flight.new(params[:flight])
-    if "#{params[:departure_date]} #{params[:departure_time]}" == "#{params[:arrival_date]} #{params[:arrival_time]}"
-      redirect_to request.referer, notice: "出発日時と到着日時が同時刻です。指定し直してください。"
-    elsif @flight.save
+    if @flight.save
       redirect_to [:airline, @flight], notice: "便を登録しました。"
     else
       render "new"

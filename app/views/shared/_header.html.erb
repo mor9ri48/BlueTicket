@@ -2,6 +2,9 @@
 <ul>
   <%= menu_link_to "TOP", :root %>
   <%= menu_link_to "便の検索", :flights %>
+  <% unless current_customer %>
+    <%= menu_link_to "新規アカウント登録", :new_customer %>
+  <% end %>
 </ul>
 <% if current_customer %>
   <ul>

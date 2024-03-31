@@ -34,7 +34,7 @@ class Customer < ApplicationRecord
     def search(query, sex)
       rel = order("id")
       if query.present?
-        rel = rel.where("login_name LIKE ? OR name LIKE ? OR alph_name LIKE ?", "#{query}", "#{query}", "#{query}")
+        rel = rel.where("name LIKE ? OR alph_name LIKE ? OR login_name LIKE ?", "%#{query}%", "%#{query}%", "%#{query}%")
       end
       if sex.to_i == 0
         rel = rel.where("sex = ? OR sex = ?", 1, 2)

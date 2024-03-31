@@ -21,13 +21,21 @@ class Flight < ApplicationRecord
   # 出発地・到着地
   validates :destination_id, comparison: { other_than: :origin_id }
 
-  # 出発日・到着日(過去の便も予約するためには一時的にコメントアウトをする / 新規便を登録する場合はそのまま)
-  #validates :departure_date, comparison: { greater_than: Time.current.to_date }
-  #validates :arrival_date, comparison: { greater_than: Time.current.to_date }
+  # 出発日・到着日
+  validates :departure_date,
+    comparison: { 
+      less_than_or_equal_to: :arrival_date
+      #greater_than: Time.current.to_date #(過去の便も予約するためには一時的にコメントアウトをする / 新規便を登録する場合はそのまま)
+    }
+  validates :arrival_date,
+    comparison: {
+      greater_than_or_equal_to: :departure_date
+      #greater_than: Time.current.to_date #(過去の便も予約するためには一時的にコメントアウトをする / 新規便を登録する場合はそのまま)
+    }
 
   # 出発日・到着日(過去の便も予約するためには一時的にコメントアウトをする / 新規便を登録する場合はそのまま))
-  #validates :departure_time, comparison: { less_than_or_equal_to: :arrival_time }
-  #validates :arrival_time, comparison: { greater_than_or_equal_to: :departure_time }
+  validates :departure_time, comparison: { less_than: :arrival_time }
+  validates :arrival_time, comparison: { greater_than: :departure_time }
 
   # 便の検索
   class << self
@@ -65,7 +73,7 @@ class Flight < ApplicationRecord
         rel = rel.where("price >= ?", minPrice)
       end
       if maxPrice.present?
-        max = maxPrice.to_i - seatPrice
+        maxPrice = maxPrice.to_i - seatPrice
         rel = rel.where("price <= ?", maxPrice)
       end
       rel

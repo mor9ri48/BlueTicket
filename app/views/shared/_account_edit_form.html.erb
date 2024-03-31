@@ -1,3 +1,5 @@
+<%= render "shared/errors", obj: @customer %>
+
 <table>
   <tr>
     <th><%= form.label :name, "氏名" %></th>
@@ -27,4 +29,3 @@
     <td><%= form.text_field :email %></td>
   </tr>
 </table>
-<%= form.submit "更新" %>
