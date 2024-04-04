@@ -33,11 +33,7 @@
       <tr>
         <td>エコノミー</td>
         <td>¥<%= @flight.price + Seat.find_by(seat_class: "economy").price %>円</td>
-        <td>
-          <% if @airmodel.economy_nums == 0 %>売り切れました。
-          <% else %>残り<%= @airmodel.economy_nums %>枚
-          <% end %>
-        </td>
+        <td>残り<%= the_rest_of_seats(@flight, "economy") %>枚</td>
         <td><%= params[:number_of_passengers]%>人</td>
         <td>¥<%= total_price %>円</td>
       </tr>
@@ -46,11 +42,7 @@
       <tr>
         <td>ビジネス</td>
         <td>¥<%= @flight.price + Seat.find_by(seat_class: "business").price %>円</td>
-        <td>
-          <% if @airmodel.business_nums == 0 %>売り切れました。
-          <% else %>残り<%= @airmodel.business_nums %>枚
-          <% end %>
-        </td>
+        <td>残り<%= the_rest_of_seats(@flight, "business") %>枚</td>
         <td><%= params[:number_of_passengers]%>人</td>
         <td>¥<%= total_price %>円</td>
       </tr>
@@ -59,11 +51,7 @@
       <tr>
         <td>ファースト</td>
         <td>¥<%= @flight.price + Seat.find_by(seat_class: "first").price %>円</td>
-        <td>
-          <% if @airmodel.first_nums == 0 %>売り切れました。
-          <% else %>残り<%= @airmodel.first_nums %>枚
-          <% end %>
-        </td>
+        <td>残り<%= the_rest_of_seats(@flight, "first") %>枚</td>
         <td><%= params[:number_of_passengers] %>人</td>
         <td>¥<%= total_price %>円</td>
       </tr>

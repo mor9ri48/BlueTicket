@@ -39,8 +39,8 @@ class Admin::BookingsController < Admin::Base
 
   def destroy
     @customer = Customer.find(params[:customer_id])
-    @booking = Booking.find_by(params[:id])
-    if @booking
+    @booking = Booking.find_by(id: params[:id])
+    if @booking.present?
       @booking.destroy
       redirect_to [:admin, @customer, :bookings], notice: "予約を取り消しました。"
     else
