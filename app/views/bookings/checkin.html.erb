@@ -1,8 +1,8 @@
-<% @page_title = "チェックイン" %>
+<% @page_title = "eチケットの表示" %>
 <h1><%= @page_title %></h1>
 
-<h3>出発時刻の20分前までに、QRコードを読み取ってください。</h3>
+<h3>搭乗するためのQRコードになります。</h3>
 
-<%= image_tag "QR_976408.png", size: "200x200", alt: "チェックイン用QRコード" %>
+<%= image_tag "QR_976408.png", size: "200x200", alt: "搭乗用QRコード" %>
 
 <p><%= link_to "予約状況に戻る", [@customer, @booking] %></p>

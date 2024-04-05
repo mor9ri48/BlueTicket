@@ -1,13 +1,14 @@
 <% number_of_passengers = 0 %>
-<% if Seat.find_by(airmodel_id: @airmodel.id).seat_class == "economy" %>
-  <% seat_class = "エコノミー" %>
-<% elsif Seat.find_by(airmodel_id: @airmodel.id).seat_class == "business" %>
-  <% seat_class = "ビジネス" %>
-<% else %>
-  <% seat_class = "ファースト" %>
-<% end %>
 <% checkin = false %>
+<% seat_class = "" %>
 <% @booking_seat_flights.each do |booking_seat_flight| %>
+  <% if booking_seat_flight.seat.seat_class == "first" %>
+    <% seat_class = "ファースト" %>
+  <% elsif booking_seat_flight.seat.seat_class == "business" %>
+    <% seat_class = "ビジネス" %>
+  <% else %>
+    <% seat_class = "エコノミー" %>
+  <% end %>
   <% if booking_seat_flight.checkin %>
     <% checkin = true %>
   <% end %>
@@ -15,6 +16,10 @@
 
 <% @page_title = "予約の詳細" %>
 <h1><%= @page_title %>(お客様画面)</h1>
+
+<% unless @flight.operation %>
+  <h3>※この便は欠航になったため、チェックインができません。お客様にはご迷惑をお掛けいたします。</h3>
+<% end %>
 
 <table>
   <thead>
@@ -93,19 +98,22 @@
         <td><%= booking_seat_flight.passenger_email %></td>
         <td><%= booking_seat_flight.passenger_telephone_number %></td>
         <td style="text-align: center" >
-          <% if booking_seat_flight.checkin %>⭕️
+          <% if !@flight.operation %>➖
+          <% elsif booking_seat_flight.checkin %>⭕️
           <% else %>❌
           <% end %>
         </td>
         <td>
-          <% unless booking_seat_flight.checkin %>
+          <% if !@flight.operation %>
+            欠航のため、チェックインできません
+          <% elsif booking_seat_flight.checkin %>
+            <%= link_to "eチケットの表示", [:checkin, @customer, @booking] %>
+          <% else %>
             <%= form_tag :booking_seat_flight, method: :patch do %>
               <%= hidden_field_tag("airmodel_id", @flight.airmodel_id) %>
               <%= hidden_field_tag("seat_number", seat_number) %>
               <%= submit_tag "チェックイン", data: {confirm: "本当にチェックインしますか？"} %>
             <% end %>
-          <% else %>
-            <%= link_to "チェックインはこちらから", [:checkin, @customer, @booking] %>
           <% end %>
         </td>
       </tr>

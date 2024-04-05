@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_22_170554) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_05_072526) do
   create_table "administrators", force: :cascade do |t|
     t.string "name", null: false
     t.string "login_name", null: false
@@ -88,9 +88,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_22_170554) do
     t.integer "airline_id", null: false
     t.integer "airmodel_id", null: false
     t.date "departure_date", null: false
-    t.time "departure_time", null: false
+    t.datetime "departure_time", null: false
     t.date "arrival_date", null: false
-    t.time "arrival_time", null: false
+    t.datetime "arrival_time", null: false
     t.integer "origin_id", null: false
     t.integer "destination_id", null: false
     t.boolean "operation", default: true, null: false

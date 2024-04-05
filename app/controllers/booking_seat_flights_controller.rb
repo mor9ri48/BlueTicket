@@ -84,6 +84,7 @@ class BookingSeatFlightsController < ApplicationController
       # 搭乗者2名の場合
       elsif params[:number_of_passengers].to_i == 2
         if params[:passenger_seat][0] == params[:passenger_seat][1]
+          @booking.destroy
           redirect_to request.referer, notice: "同じ座席を選択しています。再度、座席を選択してください。"
         elsif errors_flag 
           errors_flag = false
@@ -98,15 +99,19 @@ class BookingSeatFlightsController < ApplicationController
         elsif @booking.save && @booking_seat_flight.save
           redirect_to [@customer, :bookings], notice: "便を予約しました。"
         else
+          @booking.destroy
           redirect_to request.referer, notice: "便を予約できませんでした。"
         end
       # 搭乗者3名の場合
       elsif params[:number_of_passengers].to_i == 3
         if params[:passenger_seat][0] == params[:passenger_seat][1]
+          @booking.destroy
           redirect_to request.referer, notice: "同じ座席を選択しています。再度、座席を選択してください。"
         elsif params[:passenger_seat][0] == params[:passenger_seat][2]
+          @booking.destroy
           redirect_to request.referer, notice: "同じ座席を選択しています。再度、座席を選択してください。"
         elsif params[:passenger_seat][1] == params[:passenger_seat][2]
+          @booking.destroy
           redirect_to request.referer, notice: "同じ座席を選択しています。再度、座席を選択してください。"
         elsif errors_flag 
           errors_flag = false
@@ -121,6 +126,7 @@ class BookingSeatFlightsController < ApplicationController
         elsif @booking_seat_flight.save
           redirect_to [@customer, :bookings], notice: "便を予約しました。"
         else
+          @booking.destroy
           redirect_to request.referer, notice: "便を予約できませんでした。"
         end
       end
