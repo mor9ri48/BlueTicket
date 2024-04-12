@@ -18,7 +18,7 @@ class Airline::FlightsController < Airline::Base
     elsif params[:minPrice].to_i > params[:maxPrice].to_i
       redirect_to request.referer, notice: "左側に下限料金を、右側に上限金額を指定してください。"
     else
-      @flights = Flight.search(params[:origin], params[:destination], params[:date], params[:time],
+      @flights = Flight.search(params[:origin], params[:destination], params[:date][:date], params[:time][:time],
          params[:movement], params[:seat_class], params[:minPrice], params[:maxPrice]).page(params[:page]).per(100)
       render "index"
     end

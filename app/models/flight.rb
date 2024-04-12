@@ -39,6 +39,10 @@ class Flight < ApplicationRecord
 
       # 出発・到着の日時指定
       if date.present? && time.present? && movement.present?
+        p date
+        p time
+        p "#{date} #{time}"
+        p "#{date} #{time}".to_time
         if movement == "出発"
           rel = rel.where("departure_date = ?", date)
           rel = rel.where("departure_time >= ?", "#{date} #{time}".to_time)
